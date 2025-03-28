@@ -1,0 +1,18 @@
+{
+  "name": "nova-opus",
+  "version": "1.0.0",
+  "description": "frontend for nova-opus",
+  "author": "bencbradshaw",
+  "license": "UNLICENSED",
+  "type": "module",
+  "dependencies": {
+    "go-web-framework": "0.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typecheck": "tsc --noEmit"
+  }
+}

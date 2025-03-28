@@ -1,0 +1,3 @@
+class HomPage {
+  constructor() {}
+}
