@@ -1,18 +1,17 @@
 {
-  "name": "nova-opus",
+  "name": "framework-template",
   "version": "1.0.0",
-  "description": "frontend for nova-opus",
+  "description": "frontend for framework-template",
   "author": "bencbradshaw",
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "go-web-framework": "0.0.2"
+    "go-web-framework": "0.0.5"
   },
   "devDependencies": {
     "typescript": "^5.8.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "typecheck": "tsc --noEmit"
   }
 }

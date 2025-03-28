@@ -1,0 +1,33 @@
+on:
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  replace-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Replace occurrences with repo name
+        run: |
+          # Extract only the repository name (after the slash)
+          REPO_NAME=${{ github.event.repository.name }}
+          echo "Replacing 'framework-template' with '$REPO_NAME'"
+          # Replace text in all files (excluding the .git folder)
+          find . -type f -not -path "./.git/*" -exec sed -i "s/framework-template/$REPO_NAME/g" {} +
+          rm -rf .github/workflows/template-init.yml
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Replace 'framework-template' with repo name"
+
+      - name: Push changes
+        run: git push
