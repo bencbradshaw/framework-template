@@ -1,22 +1,14 @@
 import { provide } from 'go-web-framework/context.js';
 import { FrameworkElement } from 'go-web-framework/framework-element.js';
 import { Router } from 'go-web-framework/router.js';
-import sse from 'go-web-framework/sse.js';
-import { EntityStore } from 'src/store.js';
+import { Store } from 'src/store.js';
 
 class AppRoot extends FrameworkElement {
   @provide('service') service = [1, 2, 3, 4];
-  @provide('store') store = new EntityStore();
+  @provide('store') store = new Store();
 
   constructor() {
     super();
-    sse('/events', (event: string, data: any) => {
-      console.log('SSE event received:', event, data);
-      if (event === 'entity' && 'user' in data) {
-        console.log('SSE listener in if', data);
-        this.store.users = [...this.store.users, data.user];
-      }
-    });
   }
 
   connectedCallback() {
@@ -26,7 +18,7 @@ class AppRoot extends FrameworkElement {
       path: '/',
       component: 'app-landing',
       importer: () => import('../spa/app-landing.js'),
-      title: 'App Landing'
+      title: 'App Landing 1'
     });
     router.addRoute({
       path: '/user',

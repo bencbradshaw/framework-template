@@ -2,11 +2,12 @@ import { consume } from 'go-web-framework/context.js';
 import { FrameworkElement } from 'go-web-framework/framework-element.js';
 import { html } from 'go-web-framework/html.js';
 import { reactive } from 'go-web-framework/reactive.js';
-import { EntityStore } from 'src/store.js';
+import { Store } from 'src/store.js';
 import './app-nav.js';
 
 class User extends FrameworkElement {
-  @consume('store') store: EntityStore;
+  @consume('store') store: Store;
+
   @reactive() instanceId: string = Math.random().toString().slice(2, 10);
   @reactive() users: { ID: number; Email: string }[] = [];
 

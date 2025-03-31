@@ -1,5 +1,5 @@
 import { StateStore, prop } from 'go-web-framework/state-store.js';
 
-export class EntityStore extends StateStore {
+export class Store extends StateStore {
   @prop() users: { ID: number; Email: string }[] = [];
 }
