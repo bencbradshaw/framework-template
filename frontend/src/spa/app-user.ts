@@ -17,11 +17,7 @@ class User extends FrameworkElement {
       console.log('users SUB', users);
       this.users = users;
     });
-    fetch('/api/v1/users')
-      .then((resp) => resp.json())
-      .then((data) => {
-        this.users = data;
-      });
+
     this.updateComplete.then(() => this.attachButtonListener());
   }
 

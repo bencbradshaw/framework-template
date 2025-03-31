@@ -3,6 +3,7 @@ import { FrameworkElement } from 'go-web-framework/framework-element.js';
 import { html } from 'go-web-framework/html.js';
 import { reactive } from 'go-web-framework/reactive.js';
 import './app-nav.js';
+
 class Landing extends FrameworkElement {
   @consume('service') service: any;
   @reactive() message1: string = 'landing';
