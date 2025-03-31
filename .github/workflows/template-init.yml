@@ -1,5 +1,4 @@
 on:
-on:
   push:
     branches:
       - main
@@ -7,6 +6,7 @@ on:
 jobs:
   replace-template:
     runs-on: ubuntu-latest
+    if: ${{ github.repository }} != 'bencbradshaw/framework-template'
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
