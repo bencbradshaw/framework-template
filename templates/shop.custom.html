@@ -1,0 +1,10 @@
+{{define "content"}}
+<div>
+  <h1>Shop</h1>
+  <ul>
+    {{range .Items}}
+    <li>{{.}}</li>
+    {{end}}
+  </ul>
+</div>
+{{ end }} {{template "base" .}}

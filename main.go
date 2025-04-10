@@ -7,5 +7,14 @@ import (
 )
 
 func main() {
-	http.ListenAndServe(":2026", framework.Run(nil))
+	mux := framework.Run(nil)
+
+	mux.Handle("/shop", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		framework.RenderWithHtmlResponse(w, "shop.custom.html", map[string]any{
+			"Title": "Shop",
+			"Body":  "Welcome to the shop!",
+			"Items": []string{"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"},
+		})
+	}))
+	http.ListenAndServe(":2026", mux)
 }
