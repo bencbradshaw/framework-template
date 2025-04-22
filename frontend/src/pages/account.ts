@@ -25,7 +25,7 @@ class AppRoot extends FrameworkElement {
 
   connectedCallback() {
     const router = new Router(this);
-    router.baseUrl = '/app';
+    router.baseUrl = '/account';
     router.addRoute({
       path: '/',
       component: 'app-landing',

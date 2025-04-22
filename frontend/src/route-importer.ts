@@ -3,11 +3,14 @@ export async function routeImporter(path: string) {
     case path === '/':
       await import('./pages/home.js');
       break;
+    case path === '/shop':
+      await import('./pages/shop.js');
+      break;
     case path === '/about':
       await import('./pages/about.js');
       break;
-    case path === '/app' || /^\/app\/.*/.test(path):
-      await import('./pages/app.js');
+    case path === '/account' || /^\/account\/.*/.test(path):
+      await import('./pages/account.js');
       break;
     default:
       await import('./pages/home.js');
