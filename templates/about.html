@@ -2,4 +2,24 @@
 <div>
   <h1>About</h1>
 </div>
+<menu-toggle>
+  <template shadowrootmode="open">
+    <button>
+      <span>Menu Span</span>
+      <slot></slot>
+    </button>
+  </template>
+  Slotted Content
+</menu-toggle>
+
+<script>
+  class MenuToggle extends HTMLElement {
+    constructor() {
+      super();
+      console.log(this.shadowRoot.querySelector('button'));
+    }
+  }
+
+  customElements.define('menu-toggle', MenuToggle);
+</script>
 {{ end }} {{template "base" .}}
