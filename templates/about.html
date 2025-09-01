@@ -1,25 +1,83 @@
 {{define "content"}}
 <div>
-  <h1>About</h1>
+  <h1>About Framework Template</h1>
+  <p>A comprehensive starter template for building modern web applications with Go and TypeScript.</p>
+
+  <div class="card">
+    <h2>🎯 Purpose</h2>
+    <p>This template provides a solid foundation for web applications, combining:</p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1rem">
+      <li><strong>Backend:</strong> Go with the bencbradshaw/framework</li>
+      <li><strong>Frontend:</strong> TypeScript with ESBuild bundling</li>
+      <li><strong>Templates:</strong> Go HTML templates with auto-routing</li>
+      <li><strong>Middleware:</strong> Request logging and authentication patterns</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>✨ Features</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem">
+      <div>
+        <h3>🚀 Fast Development</h3>
+        <p>Hot reload for Go, TypeScript, and templates. See changes instantly.</p>
+      </div>
+      <div>
+        <h3>📊 Built-in Logging</h3>
+        <p>Request/response logging with timing information out of the box.</p>
+      </div>
+      <div>
+        <h3>🔒 Auth Ready</h3>
+        <p>Middleware patterns for implementing authentication systems.</p>
+      </div>
+      <div>
+        <h3>🐳 Docker Support</h3>
+        <p>Ready for containerized deployment with Docker and Docker Compose.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🛠️ Technology Stack</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem">
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Backend</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8">
+          <li>Go 1.21+</li>
+          <li>bencbradshaw/framework</li>
+          <li>Standard library HTTP</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Frontend</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8">
+          <li>TypeScript</li>
+          <li>ESBuild bundling</li>
+          <li>CSS-in-templates</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">DevOps</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8">
+          <li>Docker & Docker Compose</li>
+          <li>Make-based build system</li>
+          <li>Hot reload development</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🚀 Get Started</h2>
+    <p>
+      Ready to build something amazing? Check out the <a href="/">homepage</a> for quick start instructions, or explore
+      the <a href="/shop">shop example</a> to see the template in action.
+    </p>
+    <div style="margin-top: 1rem">
+      <a href="/" class="btn">Back to Home</a>
+      <a href="https://github.com/bencbradshaw/framework" class="btn btn-secondary" style="margin-left: 1rem"
+        >Framework Docs</a
+      >
+    </div>
+  </div>
 </div>
-<menu-toggle>
-  <template shadowrootmode="open">
-    <button>
-      <span>Menu Span</span>
-      <slot></slot>
-    </button>
-  </template>
-  Slotted Content
-</menu-toggle>
-
-<script>
-  class MenuToggle extends HTMLElement {
-    constructor() {
-      super();
-      console.log(this.shadowRoot.querySelector('button'));
-    }
-  }
-
-  customElements.define('menu-toggle', MenuToggle);
-</script>
 {{ end }} {{template "base" .}}
