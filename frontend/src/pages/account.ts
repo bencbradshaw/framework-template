@@ -11,6 +11,7 @@ class AppRoot extends FrameworkElement {
 
   constructor() {
     super();
+
     this.unsubscribe = sse('/events', (event: string, data: any) => {
       console.log('SSE event received:', event, data);
       if (event === 'entity' && 'user' in data) {

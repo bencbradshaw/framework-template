@@ -82,11 +82,6 @@ func main() {
 		})
 	})))
 
-	// Test route to verify middleware works
-	mux.Handle("/test-auth", middleware.LoggingMiddleware(AuthMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("You are authenticated!"))
-	}))))
-
 	// Authentication routes
 	mux.Handle("/login", middleware.LoggingMiddleware(auth.LoginHandler()))
 	mux.Handle("/signup", middleware.LoggingMiddleware(auth.SignupHandler()))
