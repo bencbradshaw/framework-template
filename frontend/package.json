@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "go-web-framework": "0.0.5"
+    "go-web-framework": "0.0.14"
   },
   "devDependencies": {
     "typescript": "^5.8.2"

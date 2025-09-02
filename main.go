@@ -50,29 +50,8 @@ func main() {
 
 	mux := framework.Run(framework.InitParams{
 		AuthGuard:                  AuthMiddleware,
-		IsDevMode:                  true,
-		AutoRegisterTemplateRoutes: false, // Disable auto-registration to prevent conflicts
+		AutoRegisterTemplateRoutes: true,
 	})
-
-	// Manually register all routes with proper auth control
-	mux.Handle("/", middleware.LoggingMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		framework.RenderWithHtmlResponse(w, "index.html", map[string]any{
-			"title": "Framework Template",
-		})
-	})))
-
-	mux.Handle("/about", middleware.LoggingMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		framework.RenderWithHtmlResponse(w, "about.html", map[string]any{
-			"title": "About",
-		})
-	})))
-
-	// Protected account route that redirects to login
-	mux.Handle("/account/", middleware.LoggingMiddleware(AuthMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		framework.RenderWithHtmlResponse(w, "account.subroute.auth.html", map[string]any{
-			"title": "Account",
-		})
-	}))))
 
 	mux.Handle("/shop", middleware.LoggingMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		framework.RenderWithHtmlResponse(w, "shop.custom.html", map[string]any{

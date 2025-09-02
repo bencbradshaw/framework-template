@@ -1,26 +1,27 @@
-{{define "content"}}
+{{define "page_styles"}}
 <style>
   /* Login page specific wrapper to center the login form */
   .login-page-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 200px); /* Account for navbar and footer */
     padding: 2rem 0;
   }
 
   /* --- Login Container --- */
   .login-container {
     width: 100%;
-    max-width: 450px;
+    max-width: 450px; /* Max width for the form container */
     padding: 2.5rem;
-    background: rgba(30, 41, 59, 0.8);
-    border: 1px solid #334155;
+    background: rgba(17, 24, 39, 0.6); /* Translucent background from landing page */
+    border: 1px solid rgba(55, 65, 81, 0.5); /* Border from landing page */
     border-radius: 16px;
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     text-align: center;
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 0.8s ease-out forwards; /* Fade in the form */
     margin: 2rem 0;
   }
 
@@ -41,6 +42,7 @@
     font-size: 2.2rem;
     color: #f8fafc;
     margin-bottom: 2rem;
+    text-shadow: 0 0 10px rgba(132, 146, 166, 0.2);
   }
 
   .form-group {
@@ -51,78 +53,120 @@
   .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #e2e8f0;
-    font-weight: 500;
-  }
-
-  .form-group input {
-    width: 100%;
-    padding: 0.875rem 1rem;
-    border: 1px solid #475569;
-    border-radius: 0.5rem;
-    background-color: #1e293b;
-    color: #e2e8f0;
-    font-size: 1rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .form-group input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-
-  .login-button {
-    width: 100%;
-    padding: 0.875rem;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-bottom: 1.5rem;
-  }
-
-  .login-button:hover {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  }
-
-  .login-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .signup-link {
     color: #94a3b8;
-    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .form-group input[type='email'],
+  .form-group input[type='password'] {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    background-color: #1f2937; /* Darker input background */
+    border: 1px solid #374151; /* Subtle input border */
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-family: 'Roboto Mono', monospace; /* Monospaced font for input */
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-group input[type='email']:focus,
+  .form-group input[type='password']:focus {
+    outline: none;
+    border-color: #4f46e5; /* Highlight on focus */
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+  }
+
+  .form-button {
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #4f46e5; /* Primary button color from landing page */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 1rem;
+  }
+
+  .form-button:hover {
+    background-color: #6366f1; /* Lighter shade on hover */
+    transform: translateY(-2px);
+  }
+
+  .login-footer {
     margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
   }
 
-  .signup-link a {
-    color: #60a5fa;
+  .login-footer a {
+    color: #4f46e5;
     text-decoration: none;
-    font-weight: 500;
+    transition: color 0.3s ease;
   }
 
-  .signup-link a:hover {
-    color: #93c5fd;
+  .login-footer a:hover {
+    color: #6366f1;
     text-decoration: underline;
   }
 
-  .error-message {
-    background-color: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #fca5a5;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
+  /* --- Responsive Design --- */
+  @media (max-width: 500px) {
+    .login-container {
+      max-width: 90%; /* Adjust width for smaller screens */
+      padding: 2rem 1.5rem;
+    }
+
+    .login-container h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group input {
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    .form-button {
+      padding: 1rem 1.2rem;
+      font-size: 1rem;
+    }
   }
 </style>
-{{ end }} {{template "base" .}}
+{{end}} {{define "content"}}
+<div class="login-page-wrapper">
+  <div class="login-container">
+    <h2>Welcome Back</h2>
+    <form action="/login" method="POST">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          autocomplete="current-password"
+          placeholder="••••••••" />
+      </div>
+      <button type="submit" class="form-button">Log In</button>
+    </form>
+    <div class="login-footer">
+      <p>
+        <a href="/forgot-password">Forgot password?</a>
+      </p>
+      <p>
+        Don't have an account?
+        <a href="/signup">Sign Up</a>
+      </p>
+    </div>
+  </div>
+</div>
+{{ end }}

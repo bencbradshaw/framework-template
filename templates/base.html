@@ -188,6 +188,7 @@
     </style>
   </head>
   <body>
+    {{block "page_styles" .}}{{end}}
     <nav>
       <div class="nav-left">
         <a href="/" router-ignore>Home</a>
@@ -201,9 +202,7 @@
       </div>
     </nav>
 
-    <main>
-      {{template "content" .}}
-    </main>
+    <main>{{template "content" .}}</main>
 
     <footer>
       <p>
