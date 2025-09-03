@@ -13,19 +13,6 @@ import (
 	esbuild "github.com/evanw/esbuild/pkg/api"
 )
 
-func AuthMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("AUTH CHECK: [%s %s]\n", r.Method, r.URL.Path)
-		_, err := r.Cookie("framework")
-		if err != nil {
-			// Redirect to login page instead of showing 401 error
-			http.Redirect(w, r, "/login", http.StatusFound)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
-}
-
 func build() {
 	buildParams := framework.InitParams{
 		EsbuildOpts: esbuild.BuildOptions{
@@ -49,7 +36,7 @@ func main() {
 	}
 
 	mux := framework.Run(framework.InitParams{
-		AuthGuard:                  AuthMiddleware,
+		AuthGuard:                  middleware.AuthMiddleware,
 		AutoRegisterTemplateRoutes: true,
 	})
 
@@ -67,7 +54,7 @@ func main() {
 	mux.Handle("GET /logout", middleware.LoggingMiddleware(auth.LogoutHandler()))
 
 	// Example API endpoints (protected by auth middleware)
-	mux.Handle("/api/user", middleware.LoggingMiddleware(AuthMiddleware(api.UserHandler())))
+	mux.Handle("/api/user", middleware.LoggingMiddleware(middleware.AuthMiddleware(api.UserHandler())))
 
 	print("Server started on http://localhost:2026\n")
 	http.ListenAndServe(":2026", mux)

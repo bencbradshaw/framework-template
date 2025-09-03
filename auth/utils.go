@@ -36,9 +36,14 @@ func ClearCookie(w http.ResponseWriter, name string) {
 	})
 }
 
+// Define a custom type for context keys to avoid collisions (matching middleware)
+type contextKey string
+
+const userIDKey contextKey = "userID"
+
 // GetUserID extracts user ID from request context
 // This is a helper function for use in handlers after authentication middleware
 func GetUserID(r *http.Request) (string, bool) {
-	userID, ok := r.Context().Value("userID").(string)
+	userID, ok := r.Context().Value(userIDKey).(string)
 	return userID, ok && userID != ""
 }
