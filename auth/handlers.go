@@ -66,7 +66,7 @@ func handleLoginSubmission(w http.ResponseWriter, r *http.Request) {
 	// For demo purposes, we'll accept any non-empty email/password
 	if email != "" && password != "" {
 		// Set auth cookie for 1 hour
-		SetSecureCookie(w, "framework", "demo-session", time.Hour)
+		SetSecureCookie(w, "framework", email, time.Hour)
 		http.Redirect(w, r, "/account/", http.StatusFound)
 		return
 	}
@@ -79,13 +79,12 @@ func handleLoginSubmission(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
-	name := r.FormValue("name")
 	email := r.FormValue("email")
 	password := r.FormValue("password")
-	confirmPassword := r.FormValue("confirmPassword")
 
 	// Basic validation
-	if name == "" || email == "" || password == "" || confirmPassword == "" {
+	if email == "" || password == "" {
+		print("here1")
 		framework.RenderWithHtmlResponse(w, "signup.custom.html", map[string]any{
 			"title": "Sign Up",
 			"error": "All fields are required",
@@ -93,15 +92,8 @@ func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if password != confirmPassword {
-		framework.RenderWithHtmlResponse(w, "signup.custom.html", map[string]any{
-			"title": "Sign Up",
-			"error": "Passwords do not match",
-		})
-		return
-	}
-
 	if len(password) < 6 {
+		print("here2")
 		framework.RenderWithHtmlResponse(w, "signup.custom.html", map[string]any{
 			"title": "Sign Up",
 			"error": "Password must be at least 6 characters long",
@@ -109,13 +101,10 @@ func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// In a real application, you would:
-	// 1. Check if email already exists
-	// 2. Hash the password
-	// 3. Store user in database
-	// 4. Send verification email
+	// In a real application, you would handle auth in a real way, e.g., store user in db or use IDP
 
 	// For demo purposes, we'll accept any valid signup
-	SetSecureCookie(w, "framework", "demo-session", time.Hour)
+	SetSecureCookie(w, "framework", email, time.Hour)
+	print("here3")
 	http.Redirect(w, r, "/account/", http.StatusFound)
 }

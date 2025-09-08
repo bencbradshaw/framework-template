@@ -11,12 +11,6 @@ class AppRoot extends FrameworkElement {
       importer: () => import('./account-page.js'),
       title: 'Account Overview'
     });
-    router.addRoute({
-      path: '/manage-plan',
-      component: 'manage-plan-page',
-      importer: () => import('./manage-plan-page.js'),
-      title: 'Manage Plan'
-    });
     router.navigate(window.location.pathname);
   }
 

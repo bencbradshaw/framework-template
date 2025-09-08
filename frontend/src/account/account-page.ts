@@ -293,7 +293,7 @@ class AccountPage extends FrameworkElement {
           <aside class="account-nav">
             <a href="#" class="active">Account Overview</a>
             <a href="#">Security & Password</a>
-            <a href="/account/manage-plan">Manage Plan</a>
+            <a href="#">Manage Plan</a>
             <a href="/logout" router-ignore id="sign-out" style="margin-top: 2rem; color: #ef4444; padding: 1rem;"
               >Sign Out</a
             ></a>

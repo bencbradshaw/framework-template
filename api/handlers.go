@@ -39,6 +39,7 @@ func UserHandler() http.HandlerFunc {
 
 func handleGetUser(w http.ResponseWriter, r *http.Request) {
 	userID, ok := auth.GetUserID(r)
+	print("UserID:", userID, "OK:", ok, "\n")
 	if !ok {
 		writeErrorResponse(w, "Unauthorized", http.StatusUnauthorized)
 		return

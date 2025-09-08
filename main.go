@@ -8,6 +8,7 @@ import (
 	"framework-template/api"
 	"framework-template/auth"
 	"framework-template/middleware"
+	"framework-template/shop"
 
 	"github.com/bencbradshaw/framework"
 	esbuild "github.com/evanw/esbuild/pkg/api"
@@ -30,23 +31,21 @@ func build() {
 
 func main() {
 	// Handle build command
+	// this will bundle the js into the /static dir in preparation for running on a server
 	if len(os.Args) > 1 && os.Args[1] == "build" {
 		build()
 		return
 	}
-
+	// render simple html pages. the url is based on the template file name
+	// e.g., my-blog.html will be served from /my-blog
+	// use the returned mux to handle other routes later on
 	mux := framework.Run(framework.InitParams{
 		AuthGuard:                  middleware.AuthMiddleware,
 		AutoRegisterTemplateRoutes: true,
 	})
 
-	mux.Handle("/shop", middleware.LoggingMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		framework.RenderWithHtmlResponse(w, "shop.custom.html", map[string]any{
-			"Title": "Shop",
-			"Body":  "Welcome to the shop!",
-			"Items": []string{"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"},
-		})
-	})))
+	// a sample of handling a route that needs more logic than the autoregistered templates
+	mux.Handle("/shop", middleware.LoggingMiddleware(shop.Handler()))
 
 	// Authentication routes
 	mux.Handle("/login", middleware.LoggingMiddleware(auth.LoginHandler()))
