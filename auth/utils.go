@@ -6,7 +6,9 @@ import (
 	"time"
 )
 
-// SetSecureCookie sets a cookie with secure defaults based on environment
+// SetSecureCookie sets an HTTP cookie with secure defaults based on the environment.
+// In production (APP_ENV=production), cookies are marked as Secure.
+// All cookies are HttpOnly and use SameSite=Strict for security.
 func SetSecureCookie(w http.ResponseWriter, name, value string, maxAge time.Duration) {
 	isProd := os.Getenv("APP_ENV") == "production"
 
@@ -21,7 +23,8 @@ func SetSecureCookie(w http.ResponseWriter, name, value string, maxAge time.Dura
 	})
 }
 
-// ClearCookie clears a cookie by setting it to expire immediately
+// ClearCookie clears an HTTP cookie by setting it to expire immediately.
+// Uses the same security settings as SetSecureCookie for consistency.
 func ClearCookie(w http.ResponseWriter, name string) {
 	isProd := os.Getenv("APP_ENV") == "production"
 
@@ -36,8 +39,9 @@ func ClearCookie(w http.ResponseWriter, name string) {
 	})
 }
 
-// GetUserID extracts email from auth cookie
-// This is a helper function for use in handlers after authentication middleware
+// GetUserID extracts the user identifier from the authentication cookie.
+// Returns the user ID and a boolean indicating if authentication was successful.
+// This is a helper function for use in handlers after authentication middleware.
 func GetUserID(r *http.Request) (string, bool) {
 	cookie, err := r.Cookie("framework")
 	if err != nil {

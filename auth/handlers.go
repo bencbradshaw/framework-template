@@ -7,7 +7,9 @@ import (
 	"github.com/bencbradshaw/framework"
 )
 
-// LoginHandler handles both GET (show form) and POST (process login)
+// LoginHandler handles both GET (show form) and POST (process login).
+// GET requests render the login form template.
+// POST requests validate credentials and set authentication cookies.
 func LoginHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
@@ -24,7 +26,9 @@ func LoginHandler() http.HandlerFunc {
 	}
 }
 
-// SignupHandler handles both GET (show form) and POST (process signup)
+// SignupHandler handles both GET (show form) and POST (process signup).
+// GET requests render the signup form template.
+// POST requests validate input, create user account, and set authentication cookies.
 func SignupHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
@@ -41,7 +45,8 @@ func SignupHandler() http.HandlerFunc {
 	}
 }
 
-// LogoutHandler clears the auth cookie and redirects to home
+// LogoutHandler clears the authentication cookie and redirects to home page.
+// This handler only accepts GET requests and immediately logs out the user.
 func LogoutHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ClearCookie(w, "framework")
@@ -49,6 +54,9 @@ func LogoutHandler() http.HandlerFunc {
 	}
 }
 
+// handleLoginSubmission processes login form submissions.
+// Validates email and password, and sets authentication cookie on success.
+// In a production app, this would validate against a real user database.
 func handleLoginSubmission(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
@@ -78,13 +86,15 @@ func handleLoginSubmission(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// handleSignupSubmission processes signup form submissions.
+// Validates email and password requirements, creates user account, and sets authentication cookie.
+// In a production app, this would store user data in a database and handle password hashing.
 func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
 	// Basic validation
 	if email == "" || password == "" {
-		print("here1")
 		framework.RenderWithHtmlResponse(w, "signup.custom.html", map[string]any{
 			"title": "Sign Up",
 			"error": "All fields are required",
@@ -93,7 +103,6 @@ func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(password) < 6 {
-		print("here2")
 		framework.RenderWithHtmlResponse(w, "signup.custom.html", map[string]any{
 			"title": "Sign Up",
 			"error": "Password must be at least 6 characters long",
@@ -105,6 +114,5 @@ func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
 
 	// For demo purposes, we'll accept any valid signup
 	SetSecureCookie(w, "framework", email, time.Hour)
-	print("here3")
 	http.Redirect(w, r, "/account/", http.StatusFound)
 }

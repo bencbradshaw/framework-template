@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-// statusRecorder captures the status code for logging
+// statusRecorder wraps http.ResponseWriter to capture the HTTP status code.
+// This allows the logging middleware to log the actual response status.
 type statusRecorder struct {
 	http.ResponseWriter
 	status int
@@ -17,7 +18,9 @@ func (r *statusRecorder) WriteHeader(statusCode int) {
 	r.ResponseWriter.WriteHeader(statusCode)
 }
 
-// LoggingMiddleware logs HTTP requests with method, status, duration, and path
+// LoggingMiddleware logs HTTP requests with method, status code, duration, and path.
+// Outputs both start and completion logs for request tracing.
+// Measures and reports the total request processing time.
 func LoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()

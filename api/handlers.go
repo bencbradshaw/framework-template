@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+// User represents a user account with basic profile information.
+// Used for API responses and data transfer between frontend and backend.
 type User struct {
 	ID        string    `json:"id"`
 	Email     string    `json:"email,omitempty"`
@@ -14,13 +16,17 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+// APIResponse provides a consistent structure for all API responses.
+// Includes success status, data payload, and error messages.
 type APIResponse struct {
 	Success bool        `json:"success"`
 	Data    interface{} `json:"data,omitempty"`
 	Error   string      `json:"error,omitempty"`
 }
 
-// UserHandler demonstrates API patterns with proper error handling
+// UserHandler demonstrates RESTful API patterns with proper error handling.
+// Supports GET requests to retrieve user data and PUT requests to update user information.
+// Requires authentication via the auth middleware.
 func UserHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

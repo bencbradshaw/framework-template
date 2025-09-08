@@ -6,7 +6,8 @@ Thumbs.db
 static/
 main
 *.exe
-
+# the actual binary will be named after the folder, e.g.
+framework-template
 # Environment files
 .env
 .env.local

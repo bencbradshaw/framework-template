@@ -6,7 +6,8 @@ import (
 	"github.com/bencbradshaw/framework"
 )
 
-// Product represents a shop product with all its details
+// Product represents a shop product with all its details.
+// Used to display product information in the shop template.
 type Product struct {
 	Name        string   `json:"name"`
 	Description string   `json:"description"`
@@ -14,7 +15,8 @@ type Product struct {
 	Features    []string `json:"features"`
 }
 
-// getProducts returns the list of available products
+// getProducts returns the list of available products for the shop.
+// In a real application, this would fetch from a database or external service.
 func getProducts() []Product {
 	return []Product{
 		{
@@ -38,7 +40,8 @@ func getProducts() []Product {
 	}
 }
 
-// Handler returns the shop page handler
+// Handler returns the shop page handler that displays available products.
+// Renders the shop template with product data for user browsing.
 func Handler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		framework.RenderWithHtmlResponse(w, "shop.custom.html", map[string]any{

@@ -14,6 +14,8 @@ import (
 	esbuild "github.com/evanw/esbuild/pkg/api"
 )
 
+// build compiles frontend assets for production deployment.
+// Uses ESBuild to bundle TypeScript, minify code, and output to static directory.
 func build() {
 	buildParams := framework.InitParams{
 		EsbuildOpts: esbuild.BuildOptions{
@@ -30,29 +32,32 @@ func build() {
 }
 
 func main() {
-	// Handle build command
-	// this will bundle the js into the /static dir in preparation for running on a server
+	// Handle build command for production asset compilation
+	// This builds and bundles frontend assets into the /static directory
 	if len(os.Args) > 1 && os.Args[1] == "build" {
 		build()
 		return
 	}
-	// render simple html pages. the url is based on the template file name
-	// e.g., my-blog.html will be served from /my-blog
-	// use the returned mux to handle other routes later on
+	
+	// Initialize the framework with authentication and auto-routing enabled
+	// Auto-routing creates routes based on template filenames (e.g., about.html -> /about)
 	mux := framework.Run(framework.InitParams{
-		AuthGuard:                  middleware.AuthMiddleware,
-		AutoRegisterTemplateRoutes: true,
+		AuthGuard:                  middleware.AuthMiddleware, // Protect routes that need authentication
+		AutoRegisterTemplateRoutes: true,                      // Enable automatic template-based routing
 	})
 
-	// a sample of handling a route that needs more logic than the autoregistered templates
+	// Register custom route handlers for complex business logic
+	// Shop handler demonstrates template rendering with dynamic data
 	mux.Handle("/shop", middleware.LoggingMiddleware(shop.Handler()))
 
-	// Authentication routes
+	// Authentication routes for user login/logout functionality
+	// These handle both GET (show forms) and POST (process submissions)
 	mux.Handle("/login", middleware.LoggingMiddleware(auth.LoginHandler()))
 	mux.Handle("/signup", middleware.LoggingMiddleware(auth.SignupHandler()))
 	mux.Handle("GET /logout", middleware.LoggingMiddleware(auth.LogoutHandler()))
 
-	// Example API endpoints (protected by auth middleware)
+	// Protected API endpoints that require authentication
+	// AuthMiddleware ensures only logged-in users can access these routes
 	mux.Handle("/api/user", middleware.LoggingMiddleware(middleware.AuthMiddleware(api.UserHandler())))
 
 	print("Server started on http://localhost:2026\n")
