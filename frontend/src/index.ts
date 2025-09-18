@@ -7,10 +7,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   const path = '/' + (window.location.pathname.split('/')[1] ?? '');
   switch (true) {
     case path === '/login':
-      await import('./login.js');
       break;
     case path === '/account' || /^\/account\/.*/.test(path):
-      await import('./login.js');
       await import('./account/app-root.js');
       break;
   }

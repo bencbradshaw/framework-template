@@ -17,7 +17,7 @@ const userIDKey contextKey = "userID"
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("AUTH CHECK: [%s %s]\n", r.Method, r.URL.Path)
-		
+
 		// Attempt to retrieve the authentication cookie
 		cookie, err := r.Cookie("framework")
 		if err != nil {

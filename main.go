@@ -38,7 +38,7 @@ func main() {
 		build()
 		return
 	}
-	
+
 	// Initialize the framework with authentication and auto-routing enabled
 	// Auto-routing creates routes based on template filenames (e.g., about.html -> /about)
 	mux := framework.Run(framework.InitParams{
