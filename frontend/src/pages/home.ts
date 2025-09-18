@@ -1,3 +1,0 @@
-class HomePage {
-  constructor() {}
-}

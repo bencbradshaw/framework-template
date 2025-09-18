@@ -1,5 +1,33 @@
+# OS Files
 .DS_Store
-static
+Thumbs.db
+
+# Build artifacts
+static/
+main
+*.exe
+# the actual binary will be named after the folder, e.g.
+framework-template
+# Environment files
 .env
+.env.local
+.env.production
+
+# Logs
 *.log
-jrdev/*
+jrdev/
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+.dockerignore
+
+# Go
+vendor/

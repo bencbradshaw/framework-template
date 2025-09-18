@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '2026:2026'
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/static
+    environment:
+      - APP_ENV=development
+      - PORT=2026
+    command: ['go', 'run', 'main.go', '--dev']
+    depends_on:
+      - frontend-build
+
+  frontend-build:
+    image: node:18-alpine
+    working_dir: /app/frontend
+    volumes:
+      - ./frontend:/app/frontend
+      - frontend_modules:/app/frontend/node_modules
+    command: ['npm', 'install']
+
+volumes:
+  frontend_modules:

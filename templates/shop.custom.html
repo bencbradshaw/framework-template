@@ -1,10 +1,206 @@
-{{define "content"}}
-<div>
-  <h1>Shop</h1>
-  <ul>
+{{define "page_styles"}}
+<style>
+  /* --- Shop Page Specific Styles --- */
+  .shop-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .shop-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .shop-header h1 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .shop-header p {
+    font-size: 1.25rem;
+    color: #94a3b8;
+    margin-bottom: 0;
+  }
+
+  /* --- Product Grid --- */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  /* --- Product Cards --- */
+  .product-card {
+    background: linear-gradient(145deg, #1e293b, #334155);
+    border: 1px solid #475569;
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: #60a5fa;
+  }
+
+  .product-card:hover::before {
+    opacity: 1;
+  }
+
+  /* --- Product Content --- */
+  .product-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .product-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-description {
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .product-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #60a5fa;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  /* --- Features List --- */
+  .product-features {
+    margin-bottom: 2rem;
+  }
+
+  .product-features h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .features-list li {
+    padding: 0.5rem 0;
+    color: #94a3b8;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .features-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: bold;
+  }
+
+  /* --- Purchase Button --- */
+  .purchase-btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .purchase-btn:hover {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+  }
+
+  /* --- Responsive Design --- */
+  @media (max-width: 768px) {
+    .shop-container {
+      padding: 1rem;
+    }
+
+    .products-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      padding: 1.5rem;
+    }
+
+    .shop-header h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+{{end}} {{define "content"}}
+<div class="shop-container">
+  <div class="shop-header">
+    <h1>{{.Title}}</h1>
+    <p>{{.Body}}</p>
+  </div>
+
+  <div class="products-grid">
     {{range .Items}}
-    <li>{{.}}</li>
+    <div class="product-card">
+      <div class="product-header">
+        <h3 class="product-name">{{.Name}}</h3>
+        <p class="product-description">{{.Description}}</p>
+        <span class="product-price">{{.Price}}</span>
+      </div>
+
+      <div class="product-features">
+        <h4>Features</h4>
+        <ul class="features-list">
+          {{range .Features}}
+          <li>{{.}}</li>
+          {{end}}
+        </ul>
+      </div>
+
+      <button class="purchase-btn">Get Started</button>
+    </div>
     {{end}}
-  </ul>
+  </div>
 </div>
-{{ end }} {{template "base" .}}
+{{end}} {{template "base" .}}
