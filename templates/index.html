@@ -1,29 +1,33 @@
 {{define "content"}}
 <div>
   <h1>Welcome to Framework Template</h1>
-  <p>A modern web application starter built with Go and TypeScript.</p>
+  <p>A complete starter template for web applications built with Go and TypeScript.</p>
 
   <div class="card">
     <h2>🚀 Quick Start</h2>
     <p>Get started building your web application with the framework template:</p>
     <ul style="margin-left: 1.5rem; margin-bottom: 1rem">
       <li>Modern Go web framework with hot reload</li>
-      <li>TypeScript frontend with ESBuild bundling</li>
+      <li>TypeScript with go-web-framework package and ESBuild bundling</li>
+      <li>Sample authentication system with login/signup</li>
       <li>Automatic route registration from templates</li>
-      <li>Built-in request logging and middleware</li>
+      <li>Protected routes and API endpoints</li>
+      <li>Built-in request logging middleware</li>
     </ul>
     <a href="/about" class="btn">Learn More</a>
-    <a href="/shop" class="btn btn-secondary" style="margin-left: 1rem">View Shop</a>
   </div>
 
   <div class="card">
-    <h3>📁 Project Structure</h3>
-    <p>This template follows a clean structure:</p>
+    <h3>�📁 Project Structure</h3>
+    <p>This template follows a clean, organized structure:</p>
     <ul style="margin-left: 1.5rem; color: #94a3b8">
       <li><code>templates/</code> - HTML templates (auto-routed)</li>
-      <li><code>frontend/</code> - TypeScript source code</li>
-      <li><code>middleware/</code> - HTTP middleware</li>
-      <li><code>static/</code> - Built assets</li>
+      <li><code>frontend/</code> - TypeScript source with route-based code splitting</li>
+      <li><code>middleware/</code> - Authentication and logging middleware</li>
+      <li><code>auth/</code> - Sample authentication handlers</li>
+      <li><code>api/</code> - Protected API endpoints</li>
+      <li><code>shop/</code> - Example shop implementation</li>
+      <li><code>static/</code> - Built assets (auto-generated)</li>
     </ul>
   </div>
 
@@ -39,7 +43,7 @@
         color: #e2e8f0;
         overflow-x: auto;
       ">
-make dev</pre
+make</pre
     >
   </div>
 </div>

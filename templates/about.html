@@ -4,34 +4,15 @@
   <p>A comprehensive starter template for building modern web applications with Go and TypeScript.</p>
 
   <div class="card">
-    <h2>🎯 Purpose</h2>
-    <p>This template provides a solid foundation for web applications, combining:</p>
-    <ul style="margin-left: 1.5rem; margin-bottom: 1rem">
-      <li><strong>Backend:</strong> Go with the bencbradshaw/framework</li>
-      <li><strong>Frontend:</strong> TypeScript with ESBuild bundling</li>
-      <li><strong>Templates:</strong> Go HTML templates with auto-routing</li>
-      <li><strong>Middleware:</strong> Request logging and authentication patterns</li>
-    </ul>
-  </div>
-
-  <div class="card">
     <h2>✨ Features</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem">
       <div>
-        <h3>🚀 Fast Development</h3>
-        <p>Hot reload for Go, TypeScript, and templates. See changes instantly.</p>
+        <h3>Straightforward way to create public HTML pages</h3>
+        <p>Simplistic development of SEO friendly public web pages. Gone are the days of 
+          playing games with JavaScript rendering engines and frameworks. Simply write HTML for a public page.</p>
       </div>
-      <div>
-        <h3>📊 Built-in Logging</h3>
-        <p>Request/response logging with timing information out of the box.</p>
-      </div>
-      <div>
-        <h3>🔒 Auth Ready</h3>
-        <p>Middleware patterns for implementing authentication systems.</p>
-      </div>
-      <div>
-        <h3>🐳 Docker Support</h3>
-        <p>Ready for containerized deployment with Docker and Docker Compose.</p>
+        <h3>Create 1 or multiple single page applications</h3>
+        <p>Easily handle routing to 1 or more isolated single-page-applications, your JavaScript app. Without any node process, this framework will handle all JavaScript watching and bundling for you, thanks to Esbuild's native go support.</p>
       </div>
     </div>
   </div>
@@ -42,8 +23,9 @@
       <div>
         <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Backend</h4>
         <ul style="margin-left: 1rem; color: #94a3b8">
-          <li>Go 1.21+</li>
-          <li>bencbradshaw/framework</li>
+          <li>Go 1.23.4</li>
+          <li>bencbradshaw/framework v0.0.14</li>
+          <li>ESBuild integration</li>
           <li>Standard library HTTP</li>
         </ul>
       </div>
@@ -51,8 +33,9 @@
         <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Frontend</h4>
         <ul style="margin-left: 1rem; color: #94a3b8">
           <li>TypeScript</li>
+          <li>go-web-framework v0.0.14</li>
           <li>ESBuild bundling</li>
-          <li>CSS-in-templates</li>
+          <li>Route-based code splitting</li>
         </ul>
       </div>
       <div>
@@ -61,6 +44,38 @@
           <li>Docker & Docker Compose</li>
           <li>Make-based build system</li>
           <li>Hot reload development</li>
+          <li>GitHub Actions template init</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🚀 Available Routes</h2>
+    <p>Explore the different sections of the template:</p>
+    <div
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem">
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Public Routes</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8">
+          <li><a href="/">Home</a> - Landing page</li>
+          <li><a href="/about">About</a> - This page</li>
+          <li><a href="/shop">Shop</a> - Product showcase</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Auth Routes</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8">
+          <li><a href="/login">Login</a> - User login</li>
+          <li><a href="/signup">Sign Up</a> - User registration</li>
+          <li><a href="/logout">Logout</a> - End session</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Protected Routes</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8">
+          <li><a href="/account">Account</a> - User dashboard</li>
+          <li><code>/api/user</code> - User API endpoint</li>
         </ul>
       </div>
     </div>
@@ -69,8 +84,8 @@
   <div class="card">
     <h2>🚀 Get Started</h2>
     <p>
-      Ready to build something amazing? Check out the <a href="/">homepage</a> for quick start instructions, or explore
-      the <a href="/shop">shop example</a> to see the template in action.
+      Ready to build something amazing? Check out the <a href="/">homepage</a> for quick start instructions, explore the
+      <a href="/shop">shop example</a>, or try the <a href="/login">authentication system</a>.
     </p>
     <div style="margin-top: 1rem">
       <a href="/" class="btn">Back to Home</a>
