@@ -53,47 +53,45 @@ class AccountPage extends FrameworkElement {
         <div class="account-layout">
           <aside class="account-nav">
             <a href="#" class="active">Account Overview</a>
-            <a href="/logout" router-ignore id="sign-out" style="margin-top: 2rem; color: #ef4444; padding: 1rem;"
-              >Sign Out</a
-            ></a>
+            <a href="/logout" router-ignore id="sign-out" style="margin-top: 2rem; color: #ef4444; padding: 1rem;">
+              Sign out
+            </a>
           </aside>
           <main class="account-content">
             <header class="page-header">
               <h1>Account Overview</h1>
             </header>
-            ${
-              this.user
-                ? html`
-                    <div class="card">
-                      <div class="card-header">
-                        <h2>User Profile</h2>
-                      </div>
-                      <div class="info-row">
-                        <span class="label">Display Name</span>
-                        <span class="value">${this.user.name}</span>
-                      </div>
-                      <div class="info-row">
-                        <span class="label">Email</span>
-                        <span class="value">${this.user.email}</span>
-                      </div>
+            ${this.user
+              ? html`
+                  <div class="card">
+                    <div class="card-header">
+                      <h2>User Profile</h2>
                     </div>
+                    <div class="info-row">
+                      <span class="label">Display Name</span>
+                      <span class="value">${this.user.name}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">Email</span>
+                      <span class="value">${this.user.email}</span>
+                    </div>
+                  </div>
 
-                    <div class="card">
-                      <div class="card-header">
-                        <h2>Subscription Details</h2>
-                      </div>
-                      <div class="info-row">
-                        <span class="label">Current Plan</span>
-                        <span class="value">${this.user.plan ? this.user.plan : 'Free'}</span>
-                      </div>
-                      <div class="info-row">
-                        <span class="label">Status</span>
-                        <span id="status" class="value subscription-plan">Active</span>
-                      </div>
+                  <div class="card">
+                    <div class="card-header">
+                      <h2>Subscription Details</h2>
                     </div>
-                  `
-                : html`<p>No user data found. It might have been deleted or is still loading.</p>`
-            }
+                    <div class="info-row">
+                      <span class="label">Current Plan</span>
+                      <span class="value">${this.user.plan ? this.user.plan : 'Free'}</span>
+                    </div>
+                    <div class="info-row">
+                      <span class="label">Status</span>
+                      <span id="status" class="value subscription-plan">Active</span>
+                    </div>
+                  </div>
+                `
+              : html`<p>No user data found. It might have been deleted or is still loading.</p>`}
           </main>
         </div>
       </div>
