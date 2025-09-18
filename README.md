@@ -4,40 +4,45 @@ A complete starter template for web applications built with the [bencbradshaw/fr
 
 ## Features
 
-- 🚀 **Modern Go Web Framework** - Built on the bencbradshaw/framework
-- 🎨 **Frontend Integration** - TypeScript, ESBuild bundling, hot reload
-- 🔒 **Authentication Ready** - Middleware patterns for auth implementation
-- 📊 **Request Logging** - Built-in HTTP request/response logging
+- 🚀 **Modern Go Web Framework** - Built on the bencbradshaw/framework v0.0.14
 - 🏗️ **Auto-routing** - Automatic route registration from templates
-- 📱 **Responsive Design** - Mobile-first CSS framework
-- 🐳 **Docker Support** - Ready for containerized deployment
+- 🎯 **SPA Support** - Subroute templates for single-page application sections
+- 🔐 **Protected Routes** - API endpoints with authentication middleware
+- 🎨 **Frontend Integration** - TypeScript with go-web-framework package, ESBuild bundling, hot reload
+- 🔒 **Authentication System** - Sample login/signup flow with cookie-based sessions
+- 📊 **Request Logging** - Sample HTTP request/response logging middleware
+- � **Shop Demo** - Example shop implementation with product display
+- 🐳 **Docker Support** - Multi-stage Dockerfile and docker-compose for development
 
 ## Quick Start
 
 ### Prerequisites
 
 - Go 1.21+
-- Node.js 18+ (for frontend dependencies)
+- Node.js 18+ (required only for `npm install`)
 
 ### Installation
 
-1. **Clone this template** (or use as GitHub template)
+1. **Use this template**
+
+Create a new repo from this template. A github action will create a PR to rename various references throughout your new repo.
+
+2. **Clone your repo**
 
 ```bash
-git clone <your-repo-url>
-cd framework-template
+git clone your-new-repo
 ```
 
-2. **Install dependencies**
+3. **Install dependencies**
 
 ```bash
 make install
 ```
 
-3. **Start development server**
+4. **Start development server**
 
 ```bash
-make dev
+make
 ```
 
 4. **Open browser** to [http://localhost:2026](http://localhost:2026)
@@ -48,9 +53,8 @@ make dev
 
 ```bash
 make dev          # Start development server with hot reload
-make run          # Start production server
 make build        # Build frontend assets for production
-make install      # Install Go and Node.js dependencies
+make install      # Install Go and frontend dependencies
 make clean        # Clean build artifacts
 make build-binary # Build production binary
 ```
@@ -59,43 +63,87 @@ make build-binary # Build production binary
 
 ```
 framework-template/
-├── main.go              # Application entry point
-├── middleware/          # HTTP middleware
-│   └── logging.go       # Request logging middleware
+├── main.go              # Application entry point with route setup
+├── go.mod               # Go dependencies (framework v0.0.14, esbuild)
+├── .env.example         # Environment configuration template
+├── Dockerfile           # Multi-stage Docker build
+├── docker-compose.yml   # Development environment setup
+├── makefile             # Build and development commands
+├── middleware/          # HTTP middleware components
+│   ├── auth.go          # Authentication middleware with cookie validation
+│   └── logging.go       # Request logging with timing information
+├── auth/                # Authentication system
+│   ├── handlers.go      # Login/signup form handling and processing
+│   └── utils.go         # Authentication utilities
+├── api/                 # RESTful API endpoints
+│   └── handlers.go      # Protected user API with JSON responses
+├── shop/                # Shop functionality demo
+│   └── handlers.go      # Product listing and shop page rendering
 ├── templates/           # HTML templates (auto-routed)
-│   ├── base.html        # Base layout
+│   ├── base.html        # Base layout template
 │   ├── index.html       # Home page
 │   ├── about.html       # About page
-│   └── *.html           # Other pages
+│   ├── login.custom.html # Custom login form
+│   ├── signup.custom.html # Custom signup form
+│   ├── shop.custom.html # Shop page with product display
+│   ├── account.subroute.auth.html # Protected account SPA
+│   ├── entry.html       # Entry page template
+│   └── error.html       # Error page template
 ├── frontend/            # Frontend source code
 │   ├── src/
-│   │   └── index.ts     # TypeScript entry point
-│   └── package.json     # Node.js dependencies
-├── static/              # Built assets (auto-generated)
-└── docker-compose.yml   # Local development with Docker
+│   │   ├── index.ts     # TypeScript entry with route-based code splitting
+│   │   ├── index.css    # Global styles
+│   │   └── account/     # Account page components
+│   ├── package.json     # Node.js dependencies (go-web-framework)
+│   └── tsconfig.json    # TypeScript configuration
+├── static/              # Built assets (auto-generated by ESBuild)
+└── .github/
+    └── workflows/
+        └── template-init.yml # Auto-replace template name on first use
 ```
 
 ### Development Workflow
 
-1. **Edit Go files** - Server restarts automatically in dev mode
-2. **Edit templates** - Changes reflected immediately
-3. **Edit frontend** - Assets rebuild automatically
-4. **View logs** - All requests logged with timing information
+1. **Edit Go files** - Server does not automatically restart. You can use the restart strategy of your choice.
+2. **Edit templates** - Changes reflected on next browser refresh or page load
+3. **Edit frontend** - any change to a file in `frontend/src` will autorebuild. if you are listening to the 'sse' event, the browser will reload automatically.
+4. **View logs** - All requests logged with time and method + status + time
 
 ### Adding Routes
+
+The template demonstrates multiple routing approaches:
 
 **Option 1: Template-based (automatic)**
 
 - Create `templates/newpage.html` → Available at `/newpage`
-- Create `templates/admin.subroute.html` → Available at `/admin/*` (SPA)
+- Create `templates/admin.subroute.auth.html` → Available at `/admin/*` (protected SPA)
+- Create `templates/my-spa.subroute.html` -> available at `/my-spa/*` (unprotected SPA)
+- Templates with `.custom.html` extension require custom handlers (like login/signup), and will not be automatically registered
 
-**Option 2: Programmatic**
+**Option 2: Programmatic with handlers**
 
 ```go
-mux.Handle("/api/users", middleware.LoggingMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    // Your handler logic
-})))
+// Simple route with logging
+mux.Handle("/shop", middleware.LoggingMiddleware(shop.Handler()))
+
+// Protected route with authentication
+mux.Handle("/api/user", middleware.LoggingMiddleware(middleware.AuthMiddleware(api.UserHandler())))
+
+// Authentication routes with method handling
+mux.Handle("/login", middleware.LoggingMiddleware(auth.LoginHandler()))
+mux.Handle("GET /logout", middleware.LoggingMiddleware(auth.LogoutHandler()))
 ```
+
+**Implemented Routes:**
+
+- `/` - Home page (auto-routed from `index.html`)
+- `/about` - About page (auto-routed from `about.html`)
+- `/shop` - Product showcase with custom handler
+- `/login` - Login form (GET) and submission (POST)
+- `/signup` - Signup form (GET) and submission (POST)
+- `/logout` - Logout handler (GET only)
+- `/account/*` - Protected SPA section (requires authentication)
+- `/api/user` - Protected user API endpoint
 
 ## Deployment
 
@@ -120,41 +168,79 @@ make build-binary
 
 ### Environment Variables
 
-- `APP_ENV=production` - Sets production mode
-- `PORT=8080` - Server port (default: 2026)
+Create a `.env` file based on `.env.example`:
+
+```bash
+# Core application settings
+APP_ENV=development    # or 'production' for production mode
+PORT=2026             # Server port (default: 2026)
+
+# Add your configuration as needed:
+# DATABASE_URL=
+# JWT_SECRET=
+# EXTERNAL_API_KEY=
+```
 
 ## Customization
 
 ### Authentication
 
-The template includes a basic auth middleware example. Replace with your preferred auth system:
+The template includes a **sample authentication system**:
 
-- JWT tokens
-- OAuth providers
-- Database sessions
-- External auth services
+- **Cookie-based sessions** - Simple session management via HTTP cookies
+- **Login/Signup forms** - Ready-to-use authentication pages
+- **Protected routes** - Middleware automatically redirects unauthenticated users
+- **User context** - Authenticated user ID available in request context
+
+**Current Implementation:**
+
+- Cookie value stores user ID (email) directly
+- No password hashing (demo purposes only)
+- Session stored in browser cookie named "framework"
+
+**For production, enhance with:**
+
+- JWT tokens with proper signing/validation
+- Database-backed user storage with password hashing
+- OAuth providers (Google, GitHub, etc.)
+- Secure session management with database storage
+
+### Frontend Architecture
+
+The template uses **route-based code splitting**:
+
+```typescript
+// index.ts - Entry point
+switch (path) {
+  case '/login':
+    // No additional JS needed
+    break;
+  case '/account':
+    await import('./account/app-root.js'); // Load account-specific code
+    break;
+}
+```
+
+**Technologies:**
+
+- TypeScript with `go-web-framework` package
+- ESBuild for bundling and hot reload - managed through go, not node
+  - CSS imports processed automatically
+  - Code splitting for optimized loading
 
 ### Styling
 
 - Edit `frontend/src/index.css` for global styles
-- Use the built-in CSS framework or replace with your preferred solution
+- Component-specific CSS in respective directories
 - Templates use Go template syntax with automatic escaping
-
-### Database
-
-Add your preferred database:
-
-```go
-// Example: Add to main.go
-db := setupDatabase() // Your database setup
-mux.Handle("/api/users", middleware.LoggingMiddleware(userHandler(db)))
-```
+- Built assets output to `static/` directory
 
 ## Learn More
 
 - [Framework Documentation](https://github.com/bencbradshaw/framework)
 - [Go Templates Guide](https://pkg.go.dev/text/template)
 - [ESBuild Documentation](https://esbuild.github.io/)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 
 ## License
 
