@@ -2,18 +2,6 @@
 
 A complete starter template for web applications built with the [bencbradshaw/framework](https://github.com/bencbradshaw/framework).
 
-## Features
-
-- 🚀 **Modern Go Web Framework** - Built on the bencbradshaw/framework v0.0.14
-- 🏗️ **Auto-routing** - Automatic route registration from templates
-- 🎯 **SPA Support** - Subroute templates for single-page application sections
-- 🔐 **Protected Routes** - API endpoints with authentication middleware
-- 🎨 **Frontend Integration** - TypeScript with go-web-framework package, ESBuild bundling, hot reload
-- 🔒 **Authentication System** - Sample login/signup flow with cookie-based sessions
-- 📊 **Request Logging** - Sample HTTP request/response logging middleware
-- � **Shop Demo** - Example shop implementation with product display
-- 🐳 **Docker Support** - Multi-stage Dockerfile and docker-compose for development
-
 ## Quick Start
 
 ### Prerequisites
@@ -47,7 +35,104 @@ make
 
 4. **Open browser** to [http://localhost:2026](http://localhost:2026)
 
+## Developer Scenario
+
+Picture this: You're a developer tasked with building a complete web presence for a growing company. They need a lightning-fast marketing website that Google can easily index, a secure user application with rich interactive features, and an admin panel for managing everything behind the scenes. Traditionally, this would mean juggling multiple technologies: a static site generator for marketing pages, a separate Node.js server for your JavaScript applications, complex build processes, and headaches managing different deployment pipelines. But what if you could build all of this with a single Go binary that handles everything?
+
+Enter Framework+ Framework Template. A clean approach that lets you serve SEO-optimized HTML pages alongside dynamic JavaScript applications, all from one streamlined Go process. When users land on your marketing site, Framework delivers blazing-fast static HTML that search engines love. When they're ready to sign up, the same server seamlessly handles authentication and serves your interactive React, Vue, or vanilla JavaScript applications. No need for a separate Node.js process, no complex orchestration between services, and no deployment nightmares. Framework's built-in TypeScript compilation and hot-reload development server means you can build modern, type-safe frontend applications while keeping the simplicity of a single Go binary.
+
+The magic happens during development and deployment—Framework compiles your TypeScript, bundles your assets, and serves everything through intelligent routing that knows when to deliver static HTML for SEO and when to serve your JavaScript applications for authenticated users. Deploy this single binary to Google Cloud Run's free tier, and you have a complete web application that can handle thousands of users without breaking the bank. No container orchestration, no microservice complexity, just one process that scales beautifully and costs pennies to run. Framework gives you the developer experience of modern JavaScript tooling with the operational simplicity and performance of Go, letting you focus on building features instead of managing infrastructure.
+Company Web Application Architecture
+
+## Your Website Architecture
+
+```txt
+                                    ┌─────────────────┐
+                                    │   Google Bot    │
+                                    │   (Indexing)    │
+                                    └─────────┬───────┘
+                                              │
+                                              ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          PUBLIC MARKETING WEBSITE                          │
+│                               (Plain HTML)                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐            │
+│  │  Landing Page   │  │   About Page    │  │  Features Page  │            │
+│  │   (index.html)  │  │  (about.html)   │  │ (features.html) │   ...more  │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘            │
+│                                                                             │
+│  Features:                                                                  │
+│  • SEO Optimized                                                           │
+│  • Fast Loading                                                            │
+│  • Google Indexable                                                        │
+│  • No Authentication Required                                              │
+└─────────────────────────┬───────────────────────────────────────────────────┘
+                          │
+                          │ User clicks "Get Started" / "Login"
+                          ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        AUTHENTICATION GATEWAY                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐                    ┌─────────────────┐                 │
+│  │  Login Page     │◄──────────────────►│  Signup Page    │                 │
+│  │                 │                    │                 │                 │
+│  └─────────────────┘                    └─────────────────┘                 │
+│                                                                             │
+│  Features:                                                                  │
+│  • User Authentication                                                      │
+│  • Session Management                                                       │
+│  • Role-based Access Control                                                │
+└─────────────────────────┬───────────────────────────────────────────────────┘
+                          │
+                          │ Authentication Success
+                          ▼
+                    ┌─────────────┐
+                    │   Router    │
+                    │ (Role-based)│
+                    └─────┬───────┘
+                          │
+                ┌─────────┴─────────┐
+                ▼                   ▼
+┌─────────────────────────┐    ┌─────────────────────────┐
+│     USER APPLICATION    │    │    ADMIN APPLICATION    │
+│    (JavaScript SPA)     │    │    (JavaScript SPA)     │
+├─────────────────────────┤    ├─────────────────────────┤
+│                         │    │                         │
+│ ┌─────────────────────┐ │    │ ┌─────────────────────┐ │
+│ │    Dashboard        │ │    │ │   User Management   │ │
+│ └─────────────────────┘ │    │ └─────────────────────┘ │
+│                         │    │                         │
+│ ┌─────────────────────┐ │    │ ┌─────────────────────┐ │
+│ │    Profile          │ │    │ │   Analytics         │ │
+│ └─────────────────────┘ │    │ └─────────────────────┘ │
+│                         │    │                         │
+│ ┌─────────────────────┐ │    │ ┌─────────────────────┐ │
+│ │    Features         │ │    │ │   System Settings   │ │
+│ └─────────────────────┘ │    │ └─────────────────────┘ │
+│                         │    │                         │
+│ Features:               │    │ Features:               │
+│ • Full App Experience   │    │ • Limited Access        │
+│ • Protected Routes      │    │ • Admin Only Features   │
+│ • User-specific Data    │    │ • System Management     │
+└─────────────────────────┘    └─────────────────────────┘
+```
+
 ## Development
+
+## Features
+
+- 🚀 **Modern Go Web Framework** - Built on the bencbradshaw/framework v0.0.14
+- 🏗️ **Auto-routing** - Automatic route registration from templates
+- 🎯 **SPA Support** - Subroute templates for single-page application sections
+- 🔐 **Protected Routes** - API endpoints with authentication middleware
+- 🎨 **Frontend Integration** - TypeScript with go-web-framework package, ESBuild bundling, hot reload
+- 🔒 **Authentication System** - Sample login/signup flow with cookie-based sessions
+- 📊 **Request Logging** - Sample HTTP request/response logging middleware
+- � **Shop Demo** - Example shop implementation with product display
+- 🐳 **Docker Support** - Multi-stage Dockerfile and docker-compose for development
 
 ### Available Commands
 
