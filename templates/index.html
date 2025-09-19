@@ -1,24 +1,69 @@
 {{define "content"}}
 <div>
-  <h1>Welcome to Framework Template</h1>
-  <p>A complete starter template for web applications built with Go and TypeScript.</p>
+  <h1>Build Complete Web Applications</h1>
+  <p>
+    Stop juggling multiple services. Framework Template lets you build SEO-friendly marketing sites, dynamic user
+    applications, and admin panels—all served from a single Go process.
+  </p>
 
   <div class="card">
-    <h2>🚀 Quick Start</h2>
-    <p>Get started building your web application with the framework template:</p>
-    <ul style="margin-left: 1.5rem; margin-bottom: 1rem">
-      <li>Modern Go web framework with hot reload</li>
-      <li>TypeScript with go-web-framework package and ESBuild bundling</li>
-      <li>Sample authentication system with login/signup</li>
-      <li>Automatic route registration from templates</li>
-      <li>Protected routes and API endpoints</li>
-      <li>Built-in request logging middleware</li>
-    </ul>
-    <a href="/about" class="btn">Learn More</a>
+    <h3>🏗️ Everything You Need, Nothing You Don't</h3>
+    <p>Skip the complex setup and focus on building features. This template includes:</p>
+    <div
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem">
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Frontend & Backend</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8; font-size: 0.9rem">
+          <li>Go web server with hot reload</li>
+          <li>TypeScript with ESBuild</li>
+          <li>Automatic route registration</li>
+          <li>Route-based code splitting</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Authentication</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8; font-size: 0.9rem">
+          <li>Login/signup system</li>
+          <li>Protected routes</li>
+          <li>Session middleware</li>
+          <li>API authentication</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color: #60a5fa; margin-bottom: 0.5rem">Production Ready</h4>
+        <ul style="margin-left: 1rem; color: #94a3b8; font-size: 0.9rem">
+          <li>Docker configuration</li>
+          <li>Request logging</li>
+          <li>Error handling</li>
+          <li>Static asset serving</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <div class="card">
-    <h3>�📁 Project Structure</h3>
+    <h3>🚀 Get Started in Minutes</h3>
+    <p>Start building your next web application with a single command:</p>
+    <pre
+      style="
+        background-color: #0f172a;
+        border: 1px solid #334155;
+        padding: 1rem;
+        border-radius: 0.375rem;
+        color: #e2e8f0;
+        overflow-x: auto;
+        margin: 1rem 0;
+      ">
+git clone your-repo && cd your-repo && make</pre
+    >
+    <p style="color: #94a3b8; font-size: 0.9rem">
+      Then open <a href="http://localhost:2026">localhost:2026</a> and start building. Changes to templates reload
+      instantly, TypeScript compiles automatically, and everything just works.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>📁 Project Structure</h3>
     <p>This template follows a clean, organized structure:</p>
     <ul style="margin-left: 1.5rem; color: #94a3b8">
       <li><code>templates/</code> - HTML templates (auto-routed)</li>
@@ -29,22 +74,6 @@
       <li><code>shop/</code> - Example shop implementation</li>
       <li><code>static/</code> - Built assets (auto-generated)</li>
     </ul>
-  </div>
-
-  <div class="card">
-    <h3>🛠️ Development</h3>
-    <p>Start the development server with hot reload:</p>
-    <pre
-      style="
-        background-color: #0f172a;
-        border: 1px solid #334155;
-        padding: 1rem;
-        border-radius: 0.375rem;
-        color: #e2e8f0;
-        overflow-x: auto;
-      ">
-make</pre
-    >
   </div>
 </div>
 {{ end }} {{template "base" .}}

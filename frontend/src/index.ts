@@ -8,8 +8,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   switch (true) {
     case path === '/login':
       break;
-    case path === '/account' || /^\/account\/.*/.test(path):
-      await import('./account/app-root.js');
+    case path === '/app' || /^\/app\/.*/.test(path):
+      await import('./app/app-root-user.js');
+      break;
+    case path === '/admin' || /^\/admin\/.*/.test(path):
+      await import('./admin/app-root-admin.js');
       break;
   }
 });

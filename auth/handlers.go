@@ -75,7 +75,7 @@ func handleLoginSubmission(w http.ResponseWriter, r *http.Request) {
 	if email != "" && password != "" {
 		// Set auth cookie for 1 hour
 		SetSecureCookie(w, "framework", email, time.Hour)
-		http.Redirect(w, r, "/account/", http.StatusFound)
+		http.Redirect(w, r, "/app/", http.StatusFound)
 		return
 	}
 
@@ -114,5 +114,5 @@ func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
 
 	// For demo purposes, we'll accept any valid signup
 	SetSecureCookie(w, "framework", email, time.Hour)
-	http.Redirect(w, r, "/account/", http.StatusFound)
+	http.Redirect(w, r, "/app/", http.StatusFound)
 }

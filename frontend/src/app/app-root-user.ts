@@ -1,15 +1,15 @@
 import { FrameworkElement } from 'go-web-framework/framework-element.js';
 import { Router } from 'go-web-framework/router.js';
 
-class AppRoot extends FrameworkElement {
+class AppRootUser extends FrameworkElement {
   connectedCallback() {
     const router = new Router(this);
-    router.baseUrl = '/account';
+    router.baseUrl = '/app';
     router.addRoute({
       path: '/',
-      component: 'account-page',
-      importer: () => import('./account-page.js'),
-      title: 'Account Overview'
+      component: 'user-page',
+      importer: () => import('./user-page.js'),
+      title: 'User Dashboard'
     });
     router.navigate(window.location.pathname);
   }
@@ -19,4 +19,4 @@ class AppRoot extends FrameworkElement {
   }
 }
 
-customElements.define('app-root', AppRoot);
+customElements.define('app-root-user', AppRootUser);

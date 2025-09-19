@@ -2,7 +2,7 @@ import { FrameworkElement } from 'go-web-framework/framework-element.js';
 import { html } from 'go-web-framework/html.js';
 import { reactive } from 'go-web-framework/reactive.js';
 import sse from 'go-web-framework/sse.js';
-import styles from './account-page.css.js';
+import styles from './manage-users-page.css.js';
 
 interface User {
   email: string;
@@ -10,11 +10,11 @@ interface User {
   plan?: string;
 }
 
-class AccountPage extends FrameworkElement {
+class ManageUsersPage extends FrameworkElement {
   @reactive() user: any = null;
   connectedCallback() {
     this.updateComplete.then(() => {
-      console.log('AccountPage component connected and updated');
+      console.log('ManageUsersPage component connected and updated');
       this.getUser();
     });
     sse('/events', (event: string, data: any) => {
@@ -99,4 +99,4 @@ class AccountPage extends FrameworkElement {
   }
 }
 
-customElements.define('account-page', AccountPage);
+customElements.define('manage-users-page', ManageUsersPage);
