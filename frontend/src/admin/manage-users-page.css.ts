@@ -13,6 +13,12 @@ export default html`
       font-size: clamp(2rem, 6vw, 2.5rem);
       font-weight: 700;
       color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+      color: #94a3b8;
+      font-size: 1.1rem;
       margin-bottom: 2rem;
     }
 
@@ -123,10 +129,116 @@ export default html`
       background-color: #4b5563;
     }
 
+    /* --- Users Table --- */
+    .users-table {
+      margin-top: 1rem;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: #374151;
+      border-radius: 8px 8px 0 0;
+      font-weight: 600;
+      color: #e5e7eb;
+      border-bottom: 2px solid #4b5563;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: #1f2937;
+      border-bottom: 1px solid #374151;
+      transition: background-color 0.2s ease;
+    }
+
+    .table-row:hover {
+      background-color: #374151;
+    }
+
+    .table-row:last-child {
+      border-radius: 0 0 8px 8px;
+    }
+
+    .table-cell {
+      display: flex;
+      align-items: center;
+      color: #e5e7eb;
+      font-size: 0.9rem;
+    }
+
+    .role-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .role-admin {
+      background-color: #dc2626;
+      color: #fff;
+    }
+
+    .role-user {
+      background-color: #059669;
+      color: #fff;
+    }
+
+    .btn-small {
+      padding: 0.375rem 0.75rem;
+      margin-right: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #fff;
+      background-color: #4f46e5;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-small:hover {
+      background-color: #4338ca;
+    }
+
+    .btn-danger {
+      background-color: #dc2626;
+    }
+
+    .btn-danger:hover {
+      background-color: #b91c1c;
+    }
+
+    .disabled {
+      color: #6b7280;
+      font-size: 0.8rem;
+      font-style: italic;
+    }
+
     /* --- Responsive --- */
     @media (max-width: 768px) {
       .account-layout {
         grid-template-columns: 1fr;
+      }
+
+      .table-header,
+      .table-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .table-cell {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #374151;
+      }
+
+      .table-cell:last-child {
+        border-bottom: none;
       }
     }
 

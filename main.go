@@ -59,6 +59,7 @@ func main() {
 	// Protected API endpoints that require authentication
 	// AuthMiddleware ensures only logged-in users can access these routes
 	mux.Handle("/api/user", middleware.LoggingMiddleware(middleware.AuthMiddleware(api.UserHandler())))
+	mux.Handle("/api/users", middleware.LoggingMiddleware(middleware.AuthMiddleware(api.AllUsersHandler())))
 
 	print("Server started on http://localhost:2026\n")
 	http.ListenAndServe(":2026", mux)

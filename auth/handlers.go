@@ -55,8 +55,8 @@ func LogoutHandler() http.HandlerFunc {
 }
 
 // handleLoginSubmission processes login form submissions.
-// Validates email and password, and sets authentication cookie on success.
-// In a production app, this would validate against a real user database.
+// Validates email and password against hardcoded users, and sets authentication cookie on success.
+// Redirects to appropriate dashboard based on user role (admin -> /admin/, user -> /app/).
 func handleLoginSubmission(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
@@ -70,25 +70,28 @@ func handleLoginSubmission(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// In a real application, you would validate credentials against a database
-	// For demo purposes, we'll accept any non-empty email/password
-	if email != "" && password != "" {
-		// Set auth cookie for 1 hour
-		SetSecureCookie(w, "framework", email, time.Hour)
-		http.Redirect(w, r, "/app/", http.StatusFound)
+	// Validate credentials against sample users
+	user, valid := ValidateCredentials(email, password)
+	if !valid {
+		framework.RenderWithHtmlResponse(w, "login.custom.html", map[string]any{
+			"title": "Login",
+			"error": "Invalid email or password",
+		})
 		return
 	}
 
-	// Login failed
-	framework.RenderWithHtmlResponse(w, "login.custom.html", map[string]any{
-		"title": "Login",
-		"error": "Invalid email or password",
-	})
+	// Set auth cookie for 1 hour
+	SetSecureCookie(w, "framework", email, time.Hour)
+
+	// Redirect based on user role
+	redirectURL := GetRedirectURL(user.Role)
+	http.Redirect(w, r, redirectURL, http.StatusFound)
 }
 
 // handleSignupSubmission processes signup form submissions.
 // Validates email and password requirements, creates user account, and sets authentication cookie.
-// In a production app, this would store user data in a database and handle password hashing.
+// For demo purposes, new users are assigned "user" role and redirected to /app/.
+// In production, this would store user data in a database with proper password hashing.
 func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
@@ -110,9 +113,26 @@ func handleSignupSubmission(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// In a real application, you would handle auth in a real way, e.g., store user in db or use IDP
+	// Check if user already exists
+	if _, exists := SampleUsers[email]; exists {
+		framework.RenderWithHtmlResponse(w, "signup.custom.html", map[string]any{
+			"title": "Sign Up",
+			"error": "User with this email already exists",
+		})
+		return
+	}
 
-	// For demo purposes, we'll accept any valid signup
+	// For demo purposes, add new user to sample users with "user" role
+	// In production, this would be stored in a database
+	SampleUsers[email] = User{
+		Email:    email,
+		Password: password,
+		Role:     "user",
+	}
+
+	// Set auth cookie for 1 hour
 	SetSecureCookie(w, "framework", email, time.Hour)
+
+	// New users get "user" role, redirect to /app/
 	http.Redirect(w, r, "/app/", http.StatusFound)
 }

@@ -13,6 +13,7 @@ type User struct {
 	ID        string    `json:"id"`
 	Email     string    `json:"email,omitempty"`
 	Name      string    `json:"name,omitempty"`
+	Role      string    `json:"role,omitempty"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -43,23 +44,65 @@ func UserHandler() http.HandlerFunc {
 	}
 }
 
+// AllUsersHandler returns all users in the system (admin only).
+// Only accessible by users with admin role for user management purposes.
+func AllUsersHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		if r.Method != http.MethodGet {
+			w.Header().Set("Allow", "GET")
+			writeErrorResponse(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Check if user is admin
+		user, ok := auth.GetUser(r)
+		if !ok {
+			writeErrorResponse(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		if user.Role != "admin" {
+			writeErrorResponse(w, "Forbidden - Admin access required", http.StatusForbidden)
+			return
+		}
+
+		// Get all users from sample data
+		var allUsers []User
+		for _, authUser := range auth.SampleUsers {
+			apiUser := User{
+				ID:        authUser.Email,
+				Email:     authUser.Email,
+				Name:      authUser.Email, // Using email as name for demo
+				Role:      authUser.Role,
+				CreatedAt: time.Now().AddDate(0, -1, 0), // Demo value - 1 month ago
+			}
+			allUsers = append(allUsers, apiUser)
+		}
+
+		writeSuccessResponse(w, allUsers, http.StatusOK)
+	}
+}
+
 func handleGetUser(w http.ResponseWriter, r *http.Request) {
-	userID, ok := auth.GetUserID(r)
-	print("UserID:", userID, "OK:", ok, "\n")
+	// Get full user information including role
+	user, ok := auth.GetUser(r)
 	if !ok {
 		writeErrorResponse(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
-	// In a real application, you would fetch from database
-	user := User{
-		ID:        userID,
-		Email:     "user@example.com",
-		Name:      "Example User",
-		CreatedAt: time.Now().AddDate(0, -1, 0), // 1 month ago
+	// Convert auth.User to API User format
+	apiUser := User{
+		ID:        user.Email, // Using email as ID for this demo
+		Email:     user.Email,
+		Name:      user.Email, // Using email as name for demo
+		Role:      user.Role,
+		CreatedAt: time.Now(), // Demo value
 	}
 
-	writeSuccessResponse(w, user, http.StatusOK)
+	writeSuccessResponse(w, apiUser, http.StatusOK)
 }
 
 func handleUpdateUser(w http.ResponseWriter, r *http.Request) {

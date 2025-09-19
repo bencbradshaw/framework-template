@@ -5,17 +5,21 @@ import sse from 'go-web-framework/sse.js';
 import styles from './manage-users-page.css.js';
 
 interface User {
+  id: string;
   email: string;
   name: string;
-  plan?: string;
+  role: string;
+  created_at: string;
 }
 
 class ManageUsersPage extends FrameworkElement {
-  @reactive() user: any = null;
+  @reactive() currentUser: User | null = null;
+  @reactive() allUsers: User[] = [];
   connectedCallback() {
     this.updateComplete.then(() => {
       console.log('ManageUsersPage component connected and updated');
-      this.getUser();
+      this.getCurrentUser();
+      this.getAllUsers();
     });
     sse('/events', (event: string, data: any) => {
       console.log('SSE event received:', event, data);
@@ -28,22 +32,51 @@ class ManageUsersPage extends FrameworkElement {
 
   update(): void {
     super.update();
-    // if needing to add event listeners, do it here, so
-    // after each lifecycle update, the listeners are reattached
-    this.shadowRoot.querySelector('#status')?.addEventListener('click', this.#handleActiveClick);
+    // Use event delegation for dynamic content
+    const container = this.shadowRoot.querySelector('.users-table');
+    if (container) {
+      container.addEventListener('click', this.#handleTableClick);
+    }
   }
 
   disconnectedCallback() {
-    this.shadowRoot.querySelector('#status')?.removeEventListener('click', this.#handleActiveClick);
+    // Remove event listeners
+    const container = this.shadowRoot.querySelector('.users-table');
+    if (container) {
+      container.removeEventListener('click', this.#handleTableClick);
+    }
   }
 
-  #handleActiveClick = () => {
-    console.log('Active plan clicked');
+  #handleTableClick = (event: Event) => {
+    const target = event.target as HTMLElement;
+    const row = target.closest('.table-row') as HTMLElement;
+
+    if (!row) return;
+
+    const userId = row.getAttribute('data-user-id');
+    if (!userId) return;
+
+    if (target.classList.contains('btn-view')) {
+      this.viewUser(userId);
+    } else if (target.classList.contains('btn-delete')) {
+      this.deleteUser(userId);
+    }
   };
 
-  async getUser() {
+  async getCurrentUser() {
     const { data } = (await fetch('/api/user').then((r) => r.json())) as { success: boolean; data: User };
-    this.user = data;
+    this.currentUser = data;
+  }
+
+  async getAllUsers() {
+    try {
+      const { data } = (await fetch('/api/users').then((r) => r.json())) as { success: boolean; data: User[] };
+      this.allUsers = data;
+      console.log('Fetched users:', this.allUsers);
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+      this.allUsers = [];
+    }
   }
 
   render() {
@@ -52,50 +85,90 @@ class ManageUsersPage extends FrameworkElement {
       <div class="container">
         <div class="account-layout">
           <aside class="account-nav">
-            <a href="#" class="active">Account Overview</a>
+            <a href="#" class="active">Admin Dashboard</a>
             <a href="/logout" router-ignore id="sign-out" style="margin-top: 2rem; color: #ef4444; padding: 1rem;">
               Sign out
             </a>
           </aside>
           <main class="account-content">
             <header class="page-header">
-              <h1>Account Overview</h1>
+              <h1>User Management</h1>
+              <p>Manage all users in the system</p>
             </header>
-            ${this.user
+
+            ${this.currentUser
               ? html`
                   <div class="card">
                     <div class="card-header">
-                      <h2>User Profile</h2>
-                    </div>
-                    <div class="info-row">
-                      <span class="label">Display Name</span>
-                      <span class="value">${this.user.name}</span>
+                      <h2>Current Admin</h2>
                     </div>
                     <div class="info-row">
                       <span class="label">Email</span>
-                      <span class="value">${this.user.email}</span>
-                    </div>
-                  </div>
-
-                  <div class="card">
-                    <div class="card-header">
-                      <h2>Subscription Details</h2>
+                      <span class="value">${this.currentUser.email}</span>
                     </div>
                     <div class="info-row">
-                      <span class="label">Current Plan</span>
-                      <span class="value">${this.user.plan ? this.user.plan : 'Free'}</span>
-                    </div>
-                    <div class="info-row">
-                      <span class="label">Status</span>
-                      <span id="status" class="value subscription-plan">Active</span>
+                      <span class="label">Role</span>
+                      <span class="value">${this.currentUser.role}</span>
                     </div>
                   </div>
                 `
-              : html`<p>No user data found. It might have been deleted or is still loading.</p>`}
+              : html`<p>Loading admin profile...</p>`}
+
+            <div class="card">
+              <div class="card-header">
+                <h2>All Users (${this.allUsers?.length})</h2>
+              </div>
+
+              ${this.allUsers?.length > 0
+                ? html`
+                    <div class="users-table">
+                      <div class="table-header">
+                        <div class="table-cell">Email</div>
+                        <div class="table-cell">Role</div>
+                        <div class="table-cell">Created</div>
+                        <div class="table-cell">Actions</div>
+                      </div>
+                      ${this.allUsers
+                        ?.map(
+                          (user) => html`
+                            <div class="table-row" data-user-id="${user.id}">
+                              <div class="table-cell">
+                                <strong>${user.email}</strong>
+                              </div>
+                              <div class="table-cell">
+                                <span class="role-badge role-${user.role}">${user.role}</span>
+                              </div>
+                              <div class="table-cell">${new Date(user.created_at).toLocaleDateString()}</div>
+                              <div class="table-cell">
+                                <button class="btn-small btn-view">View</button>
+                                ${user.role !== 'admin'
+                                  ? html`<button class="btn-small btn-danger btn-delete">Delete</button>`
+                                  : html`<span class="disabled">Protected</span>`}
+                              </div>
+                            </div>
+                          `
+                        )
+                        .join('')}
+                    </div>
+                  `
+                : html`<p>No users found or still loading...</p>`}
+            </div>
           </main>
         </div>
       </div>
     `;
+  }
+
+  viewUser(userId: string) {
+    console.log('View user:', userId);
+    // Implement user details view
+  }
+
+  deleteUser(userId: string) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      console.log('Delete user:', userId);
+      // Implement user deletion
+    }
   }
 }
 
